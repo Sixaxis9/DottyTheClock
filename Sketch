@@ -1,0 +1,21 @@
+#include <Dotty.h>
+#include <Wire.h>
+
+Dotty mcp;
+/*
+void mcp.Dotty1(){
+  
+}
+*/
+void setup() {
+  // put your setup code here, to run once:
+  mcp.start();
+ // Serial.begin(9600);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  int l=0;
+  l=mcp.seconds()+0;
+  Serial.println(l);
+}
