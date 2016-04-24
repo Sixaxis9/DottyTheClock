@@ -12,6 +12,12 @@ void Dotty::start()
 
   StartRTC();
 
+  pinMode(12, INPUT);
+
+  pinMode(13, INPUT);
+
+  pinMode(13, INPUT);
+
   Serial.begin(9600);   //for debug purpose only!
 }
 
@@ -325,4 +331,112 @@ void Dotty::Display1(int s1, int p1, int q1, int r1){
 
 }
 
-void button()
+bool Dotty::button1(){
+  bool switch1=digitalRead(12);
+  return switch1;
+
+}
+
+bool Dotty::button2(){
+  bool switch2=digitalRead(11);
+  return switch2;
+}
+
+bool Dotty::button3(){
+  bool switch3=digitalRead(10);
+  return switch3;
+}
+
+void Dotty::displaySelection(){
+  if(button3()==true && button2()==true){
+    times=(hours()+trimmer())*100+(minutes()+trimmer());
+    times1=temps()*100;
+  }
+  if(button3()==true && button2()==false){
+    times=(hours()+trimmer())*100+(minutes()+trimmer());
+    times1=(days()+trimmer1())*100+(months()+trimmer1());
+  }
+
+  if(button3()==false && button2()==true){
+    times=(days()+trimmer())*100+(months()+trimmer());
+    times1=years()+trimmer1();
+  }
+
+  if(button3()==false && button2()==false){
+    times=(hours()+trimmer())*100+(minutes()+trimmer());
+    times1=(hours()+trimmer1())*100+(minutes()+trimmer1());
+  }
+}
+
+int Dotty::trimmer1(){
+  if (button4()==true && button5()==true){
+
+      switch (button5()) {
+      case true:
+        trim1=trim1+1;
+        break;
+      case false:
+      trim1=trim1;
+    }
+
+  }
+return trim1;
+}
+
+int Dotty::trimmer(){
+  if (button4()==true && button5()==true){
+
+    switch (button4()) {
+      case true:
+        trim=trim+1;
+        break;
+      case false:
+      trim=0;
+    }
+
+}
+
+return trim;
+
+}
+
+int Dotty::clapper(){
+  int clap=analogRead(A1);
+  return clap;
+}
+
+void Dotty::clapperdisplay(){
+  if(button1()==true){
+    if(clapper()>100){
+      Display(s, p, q, r);
+      Display1(s1, p1, q1, r1);
+    }
+  }
+if (button1()==false){
+      Display(s, p, q, r);
+      Display1(s1, p1, q1, r1);
+}
+}
+void Dotty::displayblank(){
+  Wire.beginTransmission(0x20);   //same as before, initialize communication, address the address and then write!
+  Wire.write(0x12);
+  byte b=B11111111;
+  Wire.write(b);
+  Wire.write(b);                  //one little differece: here we're using the sequential writing in order to make the code run faster. 
+                                  //That means that the register will increase automatically, without the need to close and open the bus.
+  Wire.endTransmission();
+
+  //with this, we're going to control the anodes of the leds. We initialize another variable, and then use the arrays saw before for creating numbers.
+  //Have a look at the value of c: we're using the bit math to shift the 0s and 1s of the numbers to allow multiple numbers on one same row.
+  //So we shift the first number of a row by 0 position, because it has to be at the edge of the display, and the successive of 4 position, the 3 of the previus one and 1 of spacing.
+  //again, for the third and fouth number, we shift it by 1 position for spacing, and the other by 5 positions, 1+3+1.
+
+  
+
+  Wire.beginTransmission(0x21);
+  Wire.write(0x12);
+  byte c = B00000000;
+  Wire.write(c);
+  Wire.write(c);
+  Wire.endTransmission();
+}

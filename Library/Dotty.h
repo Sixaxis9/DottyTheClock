@@ -46,6 +46,10 @@ private:
 	int r1;	
 	int tempo;
 	int tempo1;
+	int times;
+	int times1;
+	int trim;
+	int trim1;
 
 
 	
@@ -71,7 +75,19 @@ private:
   	 byte  b = 0;
   	 byte  c = 0;
   	 int linea;
-
+  	 int hours1();
+  	 int minutes1();
+  	 void displaySelection();
+  	 bool button1();
+  	 bool button2();
+  	 bool button3();
+  	 bool button4();
+  	 bool button5();
+  	 int trimmer();
+  	 int trimmer1();
+  	 int clapper();
+  	 void clapperdisplay();
+  	 void displayblank();
 
 };
 #endif
